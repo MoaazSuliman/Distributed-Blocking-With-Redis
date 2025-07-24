@@ -1,55 +1,32 @@
-Distributed Locking with Redis
-Overview
-This solution provides a simple mechanism to coordinate access to shared resources across multiple application instances using Redis as a distributed lock manager. It ensures only one instance can execute a critical section of code at any given time, preventing race conditions in distributed environments.
+What It Does
+This tool helps multiple servers work together without stepping on each other's toes. It uses Redis to create a "do not disturb" sign that all servers can see.
 
-Key Features
-Cross-instance coordination - Prevents concurrent execution across multiple servers/containers
+Why Use It
+Stops 2+ instances from same spring boot application from doing the same job at once
 
-Automatic expiration - Built-in safety mechanism to prevent deadlocks
+Prevents errors when changing shared data
 
-Simple integration - Easy to add to existing applications
-
-Lightweight - Minimal performance overhead
+Works for apps running on many computers
 
 How It Works
-Lock Acquisition: An instance requests a lock for a specific resource
+A server asks Redis: "Can I work on X?"
 
-Exclusive Access: While locked, other instances wait
+If nobody else is working on X, Redis says "Yes" and makes a note
 
-Automatic Release: Locks expire after a configurable timeout
+When done, the server tells Redis it finished
 
-Resource Access: Safe execution of protected operations
+If a server crashes, Redis automatically cleans up after 5 minutes
 
-Implementation Details
-Uses Redis SETNX operation for atomic lock acquisition
+Good For
+Running scheduled jobs
 
-Implements lock prefixing to avoid key collisions
+Updating important data
 
-Provides both blocking and non-blocking lock checks
+Processing payments
 
-Includes automatic cleanup via Redis key expiration
+Any task that should only run once
 
-Ideal Use Cases
-Database migrations
+Needs
+Redis server (any recent version)
 
-Scheduled job coordination
-
-Resource-intensive operations
-
-Critical section protection
-
-Requirements
-Redis server (v5.0+ recommended)
-
-Spring Boot application
-
-Redis client dependencies
-
-Benefits
-Eliminates race conditions in distributed systems
-
-Maintains data consistency
-
-Simple to implement and understand
-
-No single point of failure (when using Redis Cluster)
+Basic Java/Spring app
